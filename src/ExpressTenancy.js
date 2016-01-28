@@ -1,4 +1,3 @@
-import convict from 'convict';
 import { get, set, coalesce } from 'object-path';
 import assert from 'assert';
 import Promise from 'bluebird';
