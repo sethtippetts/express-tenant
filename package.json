@@ -2,7 +2,7 @@
   "name": "express-tenant",
   "version": "0.0.2",
   "description": "Multi-tenancy express middleware",
-  "main": "lib/Tenancy.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "babel -d lib/ src/",
@@ -21,9 +21,9 @@
   "homepage": "https://github.com/SethTippetts/express-tenant#readme",
   "dependencies": {
     "bluebird": "^2.10.2",
-    "express": "^4.13.3",
+    "express": "^4.13.4",
     "object-path": "^0.9.2",
-    "tenant": "^1.0.0"
+    "tenant": "^1.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
