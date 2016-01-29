@@ -2,47 +2,44 @@ import { get, set, coalesce } from 'object-path';
 import assert from 'assert';
 import Promise from 'bluebird';
 import { Router } from 'express';
-import { Middleware } from 'tenant';
+import { Middleware, Tenant } from 'tenant';
 
 export default class ExpressTenancy extends Middleware {
-  constructor(config) {
-    super(config);
+  constructor(...config) {
+    super(...config);
   }
-  inject(req, res, next) {
-    this.parse(req)
-      .then((tenantKey = this.defaultTenant) => {
-        let tenant = get(this, ['tenants', tenantKey]);
+  inject() {
+    return (req, res, next) => {
+      this.parse(req)
+        .then((tenantKey = this.defaultTenant) => {
+          let tenant = get(this, ['tenants', tenantKey]);
 
-        set(req, this.tenantPath, tenant);
-        next();
-      })
-      .catch(next);
-  }
-  middleware(key, factory, isInternal) {
-    // Getter
-    if (!factory) return this.middlewares[key];
-    factory = factory.bind(this);
-
-    // For internal parse middlewares
-    if (isInternal) {
-      this.middlewares[key] = factory();
-      return this;
+          set(req, this.tenantPath, tenant);
+          next();
+        })
+        .catch(next);
     }
+  }
+  middleware(name, factory) {
+    // Getter
+    if (!factory) return this.middlewares[name];
 
     // Setter
     let router = new Router();
-    router.use(this.addURLPrefix.bind(this));
-    for (let tenant in this.tenants) {
-      router.use(`/${tenant}`, factory(this.tenants[tenant]));
+    router.use(this.parseRequest.bind(this));
+
+    factory = factory.bind(this);
+    for (let key in this.tenants) {
+      router.use(`/${key}`, factory(this.tenant(key).config));
     }
-    router.use(this.removeURLPrefix.bind(this));
-    this.middlewares[key] = router;
+    router.use(this.formatRequest.bind(this));
+    this.middlewares[name] = router;
     return this;
   }
   parseRequest(req, res, next) {
     let tenant = get(req, this.tenantPath);
 
-    req.url = `/${tenant.get('env')}${req.url}`;
+    req.url = `/${tenant.config.get('env')}${req.url}`;
     next();
   }
   formatRequest(req, res, next) {
