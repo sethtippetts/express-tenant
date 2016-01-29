@@ -1,7 +1,7 @@
 {
   "name": "express-tenant",
   "version": "0.1.0",
-  "description": "Multi-tenancy express middleware",
+  "description": "Express middleware for multi-tenant configuration and connection management",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/SethTippetts/express-tenant.git"
   },
+  "keywords": ["multi-tenancy", "tenancy", "tenant", "express"],
   "author": "Seth Tippetts <sethtippetts@gmail.com> (http://sethtippetts.com)",
   "license": "ISC",
   "bugs": {
