@@ -71,7 +71,7 @@ let tenancy = new Tenancy({
 
 ### Functional initialization
 
-Alternatively if can add connections and tenants functionally
+Alternatively you can add connections and tenants functionally
 
 __Example__:
 ```js
